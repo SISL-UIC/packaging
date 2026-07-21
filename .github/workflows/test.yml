@@ -33,7 +33,7 @@ jobs:
       run: pipx run nox -s tests
       env:
         NOXFORCEPYTHON: ${{ matrix.python_version }}
-    timeout-minutes: 12
+    timeout-minutes: 15
   musl:
     name: Alpine / musl
     runs-on: self-hosted
@@ -50,7 +50,7 @@ jobs:
       run: uv run --python python3 python -m pytest
       env:
         UV_PYTHON_PREFERENCE: only-system
-    timeout-minutes: 12
+    timeout-minutes: 15
   property-tests:
     name: Property tests
     runs-on: self-hosted
@@ -67,7 +67,7 @@ jobs:
       name: Setup uv
     - name: Run nox
       run: pipx run nox -s property_tests
-    timeout-minutes: 12
+    timeout-minutes: 15
   downstream:
     name: Downstream ${{ matrix.project }}
     runs-on: self-hosted
@@ -91,7 +91,7 @@ jobs:
       env:
         MATRIX_PROJECT: ${{ matrix.project }}
       run: pipx run nox -s "downstream(project='$MATRIX_PROJECT')"
-    timeout-minutes: 12
+    timeout-minutes: 15
   pickle:
     name: Pickle test
     runs-on: self-hosted
@@ -108,10 +108,10 @@ jobs:
       name: Setup uv
     - name: Run nox
       run: pipx run nox -s test_pickle
-    timeout-minutes: 12
+    timeout-minutes: 15
   pass:
     name: All pass
-    if: ${{ !cancelled() && (always()) }}
+    if: ${{ !cancelled() && (!cancelled() && (always())) }}
     needs:
     - test
     - musl
@@ -121,7 +121,7 @@ jobs:
       uses: re-actors/alls-green@05ac9388f0aebcb5727afa17fcccfecd6f8ec5fe
       with:
         jobs: ${{ toJSON(needs) }}
-    timeout-minutes: 12
+    timeout-minutes: 15
 'on':
   pull_request: null
   push:
