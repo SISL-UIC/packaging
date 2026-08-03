@@ -111,7 +111,7 @@ jobs:
     timeout-minutes: 15
   pass:
     name: All pass
-    if: ${{ !cancelled() && (!cancelled() && (always())) }}
+    if: ${{ !cancelled() && (!cancelled() && (!cancelled() && (always()))) }}
     needs:
     - test
     - musl
